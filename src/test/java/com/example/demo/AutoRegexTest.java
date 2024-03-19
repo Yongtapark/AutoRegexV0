@@ -46,6 +46,7 @@ public class AutoRegexTest {
 
         Assertions.assertThat(regex).isEqualTo(REGEX_EXPECT);
     }
+
     @Test
     @DisplayName("변하는 글자가 영어일 때, 두 문자열을 비교하여 정규표현식을 생성한다.")
     void test4() {
