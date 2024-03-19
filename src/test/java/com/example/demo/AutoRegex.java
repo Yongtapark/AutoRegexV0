@@ -65,7 +65,7 @@ public class AutoRegex {
         return sb.toString();
     }
 
-    public static String createFixedRegex(String minContext, String maxContext) {
+    public static String createFixedRegexTo15(String minContext, String maxContext) {
 
         int minLength = minContext.length();
         int maxLength = maxContext.length();
