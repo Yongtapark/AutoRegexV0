@@ -18,9 +18,16 @@ public class AutoRegexController {
     }
 
     @PostMapping("flexible-regex")
-    public ResponseEntity<ResponseForAutoRegexDto> flexibleRegex(@RequestBody RequestForAutoRegexDto requestForAutoRegexDto) {
+    public ResponseEntity<ResponseForAutoRegexDto> createFlexibleRegex(@RequestBody RequestForAutoRegexDto requestForAutoRegexDto) {
         String flexibleRegex = autoRegexService.createFlexibleRegex(requestForAutoRegexDto.stringA(),
                 requestForAutoRegexDto.stringB());
         return ResponseEntity.ok(new ResponseForAutoRegexDto(flexibleRegex));
+    }
+
+    @PostMapping("fixed-regex")
+    public ResponseEntity<ResponseForAutoRegexDto> createFixedRegex(@RequestBody RequestForAutoRegexDto requestForAutoRegexDto) {
+        String fixedRegex = autoRegexService.createFixedRegex(requestForAutoRegexDto.stringA(),
+                requestForAutoRegexDto.stringB());
+        return ResponseEntity.ok(new ResponseForAutoRegexDto(fixedRegex));
     }
 }
