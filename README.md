@@ -7,7 +7,11 @@
 <br>
 예) context1 = 1번출구
     context2  = 2번출구
-     return = "\\d+번출구"
+    return = "\\d+번출구"
+
+    context1 = 000-0000-0000
+    context2 = 111-1111-2222
+    return = "\\d\\d\\d-\\d\\d\\d\\d-\\d\\d\\d\\d"
 
 ### 테스트 케이스
 1. 맨 앞이 변하는 문자일 때
