@@ -1,4 +1,4 @@
-package com.example.demo.exceptions;
+package com.example.demo.autoregex.exceptions;
 
 public class AutoRegexException extends IllegalArgumentException{
     public AutoRegexException(String s) {

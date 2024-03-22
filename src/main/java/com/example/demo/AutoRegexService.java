@@ -1,8 +1,8 @@
 package com.example.demo;
 
-import org.springframework.stereotype.Service;
+import com.example.demo.autoregex.AutoRegex;
 
-@Service
+
 public class AutoRegexService {
     private final AutoRegex autoRegex;
 

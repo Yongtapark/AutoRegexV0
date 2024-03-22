@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AutoregexApplication {
+public class AutoRegexApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AutoregexApplication.class, args);
+		SpringApplication.run(AutoRegexApplication.class, args);
 	}
 
 }

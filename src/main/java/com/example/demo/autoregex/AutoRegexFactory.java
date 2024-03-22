@@ -1,6 +1,4 @@
-package com.example.demo;
-
-import com.example.demo.AutoRegex;
+package com.example.demo.autoregex;
 
 public class AutoRegexFactory {
     final static int defaultFlexibleSize = 6;

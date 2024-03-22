@@ -1,7 +1,7 @@
-package com.example.demo;
+package com.example.demo.autoregex;
 
-import com.example.demo.exceptions.AutoRegexDifferentLengthException;
-import com.example.demo.exceptions.AutoRegexOverMaxSizeException;
+import com.example.demo.autoregex.exceptions.AutoRegexDifferentLengthException;
+import com.example.demo.autoregex.exceptions.AutoRegexOverMaxSizeException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
@@ -112,7 +112,6 @@ public class AutoRegex {
 
             } catch (NumberFormatException e) {
                 if (isKorean(stringB, index)) {
-
                     regexParts[index] = KOREAN_REGEX;
                 } else if (isEnglish(stringB, index)) {
                     regexParts[index] = ENGLISH_REGEX;
