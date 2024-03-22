@@ -34,8 +34,8 @@ class AutoRegexControllerTest {
     @MockBean
     AutoRegexService autoRegexService;
     @Test
-    @DisplayName("flexible-regex api 테스트")
-    void test1() throws Exception {
+    @DisplayName("A 문자열과 B 문자열을 입력하면 두 문자열의 공통된 정규표현식을 반환한다.")
+    void test1ForFlexibleRegex() throws Exception {
         //given
         final String STRING_A = "1번출구";
         final String STRING_B = "2번출구";
@@ -50,6 +50,38 @@ class AutoRegexControllerTest {
 
         //when
         MvcResult result = mockMvc.perform(post("/api/auto-regex/flexible-regex")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String responseBody = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        ResponseForAutoRegexDto actualDto = objectMapper.readValue(responseBody,
+                ResponseForAutoRegexDto.class);
+
+        //then
+        Assertions.assertThat(expectDto).isEqualTo(actualDto);
+
+
+    }
+
+    @Test
+    @DisplayName("A 문자열과 B 문자열을 입력하면 두 문자열의 공통된 정규표현식을 반환한다.")
+    void test2ForFixedRegex() throws Exception {
+        //given
+        final String STRING_A = "111-1111-2222";
+        final String STRING_B = "000-0000-0000";
+        RequestForAutoRegexDto request = new RequestForAutoRegexDto(STRING_A, STRING_B);
+
+        String requestBody = objectMapper.writeValueAsString(request);
+        AutoRegex regexDefault = new AutoRegexFactory().createRegexDefault();
+        String fixedRegex = regexDefault.createFixedRegex(STRING_A, STRING_B);
+        ResponseForAutoRegexDto expectDto = new ResponseForAutoRegexDto(fixedRegex);
+
+        given(autoRegexService.createFixedRegex(anyString(),anyString())).willReturn(fixedRegex);
+
+        //when
+        MvcResult result = mockMvc.perform(post("/api/auto-regex/fixed-regex")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk())
