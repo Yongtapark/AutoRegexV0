@@ -1,6 +1,11 @@
 package com.example.demo;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import com.example.demo.exceptions.AutoRegexDifferentLengthException;
+import com.example.demo.exceptions.AutoRegexFactory;
+import com.example.demo.exceptions.AutoRegexOverMaxSizeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +14,6 @@ public class AutoRegexTest {
     final static String KOREAN_REGEX = "[ㄱ-ㅎㅏ-ㅣ가-힣]";
     final static String ENGLISH_REGEX = "[A-Za-z]";
     final static String NUMBERS_REGEX = "\\d+";
-    final static String NUMBER_REGEX = "\\d";
 
     @Test
     @DisplayName("맨 앞 글자가 변할 때, 두 문자열을 비교하여 정규표현식을 생성한다.")
@@ -18,9 +22,11 @@ public class AutoRegexTest {
         final String ID_2 = "2번출구";
         final String REGEX_EXPECT = NUMBERS_REGEX + "번출구";
 
-        String regex = AutoRegex.createFlexibleRegex(ID_1, ID_2);
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+        String regex = autoRegex.createFlexibleRegex(ID_1, ID_2);
 
-        Assertions.assertThat(regex).isEqualTo(REGEX_EXPECT);
+        assertThat(regex).isEqualTo(REGEX_EXPECT);
     }
 
     @Test
@@ -30,9 +36,11 @@ public class AutoRegexTest {
         final String ID_2 = "제 2 광산";
         final String REGEX_EXPECT = "제 " + NUMBERS_REGEX + " 광산";
 
-        String regex = AutoRegex.createFlexibleRegex(ID_1, ID_2);
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+        String regex = autoRegex.createFlexibleRegex(ID_1, ID_2);
 
-        Assertions.assertThat(regex).isEqualTo(REGEX_EXPECT);
+        assertThat(regex).isEqualTo(REGEX_EXPECT);
     }
 
     @Test
@@ -42,9 +50,11 @@ public class AutoRegexTest {
         final String ID_2 = "나-3";
         final String REGEX_EXPECT = KOREAN_REGEX + "-" + NUMBERS_REGEX;
 
-        String regex = AutoRegex.createFlexibleRegex(ID_1, ID_2);
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+        String regex = autoRegex.createFlexibleRegex(ID_1, ID_2);
 
-        Assertions.assertThat(regex).isEqualTo(REGEX_EXPECT);
+        assertThat(regex).isEqualTo(REGEX_EXPECT);
     }
 
 
@@ -55,9 +65,11 @@ public class AutoRegexTest {
         final String ID_2 = "b-3";
         final String REGEX_EXPECT = ENGLISH_REGEX + "-" + NUMBERS_REGEX;
 
-        String regex = AutoRegex.createFlexibleRegex(ID_1, ID_2);
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+        String regex = autoRegex.createFlexibleRegex(ID_1, ID_2);
 
-        Assertions.assertThat(regex).isEqualTo(REGEX_EXPECT);
+        assertThat(regex).isEqualTo(REGEX_EXPECT);
     }
 
     @Test
@@ -67,8 +79,58 @@ public class AutoRegexTest {
         final String ID_2 = "000-0000-0000";
         final String REGEX_EXPECT = "\\d\\d\\d-\\d\\d\\d\\d-\\d\\d\\d\\d";
 
-        String regex = AutoRegex.createFixedRegexTo15(ID_1, ID_2);
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+        String regex = autoRegex.createFixedRegex(ID_1, ID_2);
 
-        Assertions.assertThat(regex).isEqualTo(REGEX_EXPECT);
+        assertThat(regex).isEqualTo(REGEX_EXPECT);
+    }
+
+    @Test
+    @DisplayName("비교하는 두 문자열의 길이가 다르면 예외를 발생한다.")
+    void test6WhenBothLengthAreDifferentFromFlexibleRegex() {
+        final String ID_1 = "a-1";
+        final String ID_2 = "b-33";
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+
+        assertThatThrownBy(()-> autoRegex.createFlexibleRegex(ID_1, ID_2)).isInstanceOf(
+                AutoRegexDifferentLengthException.class);
+    }
+
+    @Test
+    @DisplayName("비교하는 두 문자열의 길이가 다르면 예외를 발생한다.")
+    void test6WhenBothLengthAreDifferentFromFixedRegex() {
+        final String ID_1 = "111-1111-2222";
+        final String ID_2 = "000-0000-00000";
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+
+        assertThatThrownBy(()-> autoRegex.createFixedRegex(ID_1, ID_2)).isInstanceOf(
+                AutoRegexDifferentLengthException.class);
+    }
+
+    @Test
+    @DisplayName("비교하는 두 문자열의 길이가 다르면 예외를 발생한다.")
+    void test7WhenFlexibleRegexOverLength() {
+        final String ID_1 = "banana-13";
+        final String ID_2 = "banana-33";
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+
+        assertThatThrownBy(()-> autoRegex.createFlexibleRegex(ID_1, ID_2)).isInstanceOf(
+                AutoRegexOverMaxSizeException.class);
+    }
+
+    @Test
+    @DisplayName("비교하는 두 문자열의 길이가 다르면 예외를 발생한다.")
+    void test7WhenFixedRegexOverLength() {
+        final String ID_1 = "111-1111-22220-00000";
+        final String ID_2 = "000-0000-00000-00000";
+        AutoRegexFactory autoRegexFactory = new AutoRegexFactory();
+        AutoRegex autoRegex = autoRegexFactory.createRegexDefault();
+
+        assertThatThrownBy(()-> autoRegex.createFixedRegex(ID_1, ID_2)).isInstanceOf(
+                AutoRegexOverMaxSizeException.class);
     }
 }
