@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.example.demo.exceptions.AutoRegexDifferentLengthException;
-import com.example.demo.exceptions.AutoRegexFactory;
 import com.example.demo.exceptions.AutoRegexOverMaxSizeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
