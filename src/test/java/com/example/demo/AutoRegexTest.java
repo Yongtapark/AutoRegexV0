@@ -3,8 +3,10 @@ package com.example.demo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.example.demo.exceptions.AutoRegexDifferentLengthException;
-import com.example.demo.exceptions.AutoRegexOverMaxSizeException;
+import com.example.demo.autoregex.AutoRegex;
+import com.example.demo.autoregex.AutoRegexFactory;
+import com.example.demo.autoregex.exceptions.AutoRegexDifferentLengthException;
+import com.example.demo.autoregex.exceptions.AutoRegexOverMaxSizeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -110,7 +112,7 @@ public class AutoRegexTest {
     }
 
     @Test
-    @DisplayName("비교하는 두 문자열의 길이가 다르면 예외를 발생한다.")
+    @DisplayName("두 문자의 길이가 최대 길이제한을 넘으면 예외를 발생한다.")
     void test7WhenFlexibleRegexOverLength() {
         final String ID_1 = "banana-13";
         final String ID_2 = "banana-33";
@@ -122,7 +124,7 @@ public class AutoRegexTest {
     }
 
     @Test
-    @DisplayName("비교하는 두 문자열의 길이가 다르면 예외를 발생한다.")
+    @DisplayName("두 문자의 길이가 최대 길이제한을 넘으면 예외를 발생한다.")
     void test7WhenFixedRegexOverLength() {
         final String ID_1 = "111-1111-22220-00000";
         final String ID_2 = "000-0000-00000-00000";
